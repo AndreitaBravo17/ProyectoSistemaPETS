@@ -1,0 +1,110 @@
+version: '3.8'
+
+services:
+
+  propietarios-service:
+    build:
+      context: ./propietarios-service
+      dockerfile: Dockerfile
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db_mysql:3306/propietarios
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: admin
+    ports:
+      - "8087:8087"
+    depends_on:
+      - db_mysql
+    networks:
+      - mynetwork
+
+  mascotas-service:
+    build:
+      context: ./mascotas-service
+      dockerfile: Dockerfile
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db_mysql:3306/mascotas
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: admin
+    ports:
+      - "8082:8082"
+    depends_on:
+      - db_mysql
+    networks:
+      - mynetwork
+
+  citasmedicas-service:
+    build:
+      context: ./citasmedicas-service
+      dockerfile: Dockerfile
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db_mysql:3306/citasmedicas
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: admin
+    ports:
+      - "8083:8083"
+    depends_on:
+      - db_mysql
+    networks:
+      - mynetwork
+
+  registrosmedicos-service:
+    build:
+      context: ./registrosmedicos-service
+      dockerfile: Dockerfile
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db_mysql:3306/registrosmedicos
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: admin
+    ports:
+      - "8084:8084"
+    depends_on:
+      - db_mysql
+    networks:
+      - mynetwork
+
+  vacunas-service:
+    build:
+      context: ./vacunas-service
+      dockerfile: Dockerfile
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db_mysql:3306/vacunas
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: admin
+    ports:
+      - "8085:8085"
+    depends_on:
+      - db_mysql
+    networks:
+      - mynetwork
+
+  kpi-dashboard:
+    build:
+      context: ./kpi-dashboard
+      dockerfile: Dockerfile
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db_mysql:3306/kpidashboard
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: admin
+    ports:
+      - "8086:8086"
+    depends_on:
+      - db_mysql
+    networks:
+      - mynetwork
+
+  db_mysql:
+    image: mysql:latest
+    container_name: db_mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_DATABASE: sistema_pets
+    ports:
+      - "3307:3306"
+    volumes:
+      - ./mysql_data:/var/lib/mysql
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
+    driver: bridge
